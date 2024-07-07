@@ -119,7 +119,7 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 350px;
+  max-width: 260px;
   margin: 40px auto 0;
   padding: 0 20px;
 }
