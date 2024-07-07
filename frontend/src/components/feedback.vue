@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="showFeedbackForm">Give Feedback</button>
+    <button class="feedback-button" @click="showFeedbackForm">Give Feedback</button>
     
     <div v-if="showForm" class="feedback-popup">
       <h1>Feedback Form</h1>
@@ -50,7 +50,7 @@ export default {
         if (response.ok) {
           const data = await response.json();
           alert('Feedback submitted: ' + data.score);
-          this.showForm = false; // Hide the form after submission
+          this.showForm = false;
         } else {
           alert('Failed to submit feedback');
         }
@@ -70,6 +70,20 @@ export default {
 </script>
 
 <style>
+.feedback-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.feedback-button:hover {
+  background-color: #0056b3;
+}
+
 .feedback-popup {
   position: fixed;
   top: 50%;
@@ -78,7 +92,7 @@ export default {
   background: white;
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* Ensure it's above other content */
+  z-index: 1000;
   width: 300px;
 }
 
