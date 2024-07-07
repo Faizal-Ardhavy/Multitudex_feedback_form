@@ -1,24 +1,28 @@
 <template>
   <div>
-    <h1>Feedback Form</h1>
-    <h2> How would you rate your satisfaction with our product? </h2>
-    <div id="rating">
-      <div
-        v-for="star in 5"
-        :key="star"
-        @mouseover="hoverRating(star)"
-        @mouseleave="hoverRating(0)"
-        @click="submitFeedback(star)"
-        :class="{'active': star <= currentRating, 'hovered': star <= hoverRatingValue}"
-        class="star"
-      >
-        ☆
-        <span class="number">{{ star }}</span>
+    <button @click="showFeedbackForm">Give Feedback</button>
+    
+    <div v-if="showForm" class="feedback-popup">
+      <h1>Feedback Form</h1>
+      <h2>How would you rate your satisfaction with our product?</h2>
+      <div id="rating">
+        <div
+          v-for="star in 5"
+          :key="star"
+          @mouseover="hoverRating(star)"
+          @mouseleave="hoverRating(0)"
+          @click="submitFeedback(star)"
+          :class="{'active': star <= currentRating, 'hovered': star <= hoverRatingValue}"
+          class="star"
+        >
+          ☆
+          <span class="number">{{ star }}</span>
+        </div>
       </div>
-    </div>
-    <div id="feedback-text">
-      <span class="feedback-left">Very Dissatisfied</span>
-      <span class="feedback-right">Very Satisfied</span>
+      <div id="feedback-text">
+        <span class="feedback-left">Very Dissatisfied</span>
+        <span class="feedback-right">Very Satisfied</span>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +31,7 @@
 export default {
   data() {
     return {
+      showForm: false,
       currentRating: 0,
       hoverRatingValue: 0,
     };
@@ -45,6 +50,7 @@ export default {
         if (response.ok) {
           const data = await response.json();
           alert('Feedback submitted: ' + data.score);
+          this.showForm = false; // Hide the form after submission
         } else {
           alert('Failed to submit feedback');
         }
@@ -55,12 +61,27 @@ export default {
     },
     hoverRating(value) {
       this.hoverRatingValue = value;
+    },
+    showFeedbackForm() {
+      this.showForm = true;
     }
   }
 }
 </script>
 
 <style>
+.feedback-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure it's above other content */
+  width: 300px;
+}
+
 #rating {
   display: flex;
   justify-content: center;
@@ -108,7 +129,6 @@ export default {
   font-size: 1em;
   color: gray;
 }
-
 
 .number {
   font-size: 0.5em;
